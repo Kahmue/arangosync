@@ -1,0 +1,12 @@
+#ifndef ARANGODB_GLOBAL_H
+#define ARANGODB_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(ARANGODB_LIBRARY)
+#  define ARANGODBSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define ARANGODBSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // ARANGODB_GLOBAL_H
