@@ -10,6 +10,7 @@ namespace Arango {
 class CollectionPrivate;
 class ArangoDB;
 
+/* Comment for testing purposes ... */
 
 class ARANGODBSHARED_EXPORT Collection : public QObject
 {
