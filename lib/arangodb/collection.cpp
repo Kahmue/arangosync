@@ -3,6 +3,8 @@
 #include "arangodb.h"
 #include "aqlquery.h"
 
+#include <QtDebug>
+
 namespace Arango {
 
 Collection::Collection(const QString &name, ArangoDB *parent) : QObject(parent), d_ptr(new CollectionPrivate(this))
@@ -21,6 +23,12 @@ UserDescriptor *Collection::user()
 {
     Q_D(Collection);
     return d->_user;
+}
+
+QString Collection::name() const
+{
+    Q_D(const Collection);
+    return d->_name;
 }
 
 CollectionDescriptor *Collection::descriptor()
@@ -172,6 +180,27 @@ bool Collection::verifyRevision(Document *doc)
 {
     Q_D(Collection);
     return d->verifyRevision(doc);
+}
+
+QStringList Collection::filter(const QString &fclause)
+{
+    Q_D(Collection);
+    QStringList result;
+    QString fstring = "FOR item IN " + name() + " FILTER " + fclause + " RETURN { \"_key\" : item._key }";
+    AQLQuery *q = d->db_ptr->query(fstring);
+    if (!q->isQueryValid()) {
+        qDebug() << "FILTER is invalid" << q->error();
+        return QStringList();
+    }
+    if (!q->exec()) {
+        qDebug() << "FILTER Query failed" << q->error();
+        return QStringList();
+    }
+    qDebug() << "FILTER COUNT" << q->count();
+    for (QJsonValue v : q->objects()) {
+        result << v.toObject()["_key"].toString();
+    }
+    return result;
 }
 
 Document *Collection::operator[](const QString &key)

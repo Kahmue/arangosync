@@ -17,6 +17,7 @@ class ARANGODBSHARED_EXPORT Collection : public QObject
 public:
     explicit Collection(const QString& name, ArangoDB *parent = 0);
     UserDescriptor *user();
+    QString name() const;
     CollectionDescriptor *descriptor();
     int count() const;
     QString revision() const;
@@ -34,6 +35,7 @@ public:
     bool replace(Document *doc, MatchPolicy match = MatchPolicy::None);
     bool verifyRevision(const QString& key);
     bool verifyRevision(Document *doc);
+    QStringList filter(const QString& fclause);
     Document *operator[](const QString& key);
     QStringList keys() const;
 signals:
