@@ -123,7 +123,7 @@ AQLQuery *ArangoDB::query(const QString &query, int batchSize)
     return q;
 }
 
-Collection *ArangoDB::createCollection(CollectionDescriptor &desc)
+bool ArangoDB::createCollection(CollectionDescriptor &desc)
 {
     Q_D(ArangoDB);
     QString apiurl = d->_apiurl + "/collection";
@@ -132,9 +132,9 @@ Collection *ArangoDB::createCollection(CollectionDescriptor &desc)
     if (req.sendWithResponseCode({200})) {
         d->_collHeadersLoaded = false;
         d->loadCollectionHeaders();
-        return nullptr; // TODO
+        return true; // TODO
     }
-    return nullptr;
+    return false;
 }
 
 bool ArangoDB::dropCollection(const QString& name)

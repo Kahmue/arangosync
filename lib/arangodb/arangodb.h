@@ -33,7 +33,7 @@ public:
     // Query
     AQLQuery *query(const QString& query, int batchSize = 50);
     // Collections
-    Collection *createCollection(CollectionDescriptor &desc);
+    bool createCollection(CollectionDescriptor &desc);
     bool dropCollection(const QString &name);
     QStringList collections() const;
     Collection *operator[](const QString& id);
